@@ -1,0 +1,252 @@
+* {
+    margin: 0;
+    padding: 0;
+    user-select: none; /* 元素和子元素的文本将无法被选中 */
+}
+
+body {
+    overflow: hidden /* 元素内容超过块级上下文时，隐藏。  */
+}
+
+
+
+/* 画板的样式 */
+#drawing-board {
+    cursor: crosshair; /* 鼠标是十字架 */
+}
+
+
+/* 工具栏样式：主要是设置位置 */
+.tools {
+    position: fixed;
+    left: 0;
+    bottom: 30px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    text-align: center
+}
+
+/* 工具栏按钮样式 */
+.tools button {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    background-color: rgba(255, 255, 255, 0.7);
+    border: 1px solid #eee;
+    outline: none;
+    cursor: pointer;
+    box-sizing: border-box;
+    margin: 0 10px;
+    text-align: center;
+    color: #ccc;
+    line-height: 50px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    transition: 0.3s;
+}
+
+/* tools 下 active类的button  和被“选中”的button（鼠标点击该元素时，该元素被“选中”） */
+.tools button.active, .tools button:active {
+    box-shadow: 0 0 15px #00CCFF;
+    color: #00CCFF;
+}
+
+/* 按钮字体大小 */
+.tools button i {
+    font-size: 24px;
+}
+
+/* 识别结果 */
+.tools .recognition_result {
+    background-color: rgba(255, 255, 255, 0.7);
+    box-sizing: border-box;
+    border-radius: 10%;
+    height: 50px;
+    border: 1px solid #eee;
+    margin: 0 15px;
+    color: #ccc;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    transition: 1s
+}
+
+.tools .recognition_result.success {
+    box-shadow: 0 0 15px #00CCFF;
+    color: #00CCFF;
+}
+
+.tools .recognition_result .label {
+    padding-left: 10px
+}
+
+#recognition_result {
+    padding-right: 10px
+}
+
+
+/* 颜色组位置设置 */
+.color-group {
+    position: fixed;
+    width: 30px; /* 将彩虹条隐藏起来 */
+    left: 30px;
+    top: 50%;
+    transform: translate(0, -150px)
+}
+
+
+/* 无序列表样式，将每一项前面的默认标签删除 */
+.color-group ul {
+    list-style: none; /* 设置列表每一项前面的标点（这里设置为none，即不要每一项前面的标志） */
+}
+
+/* 自定义列表强标点 */
+.color-group ul li {
+    width: 30px;
+    height: 30px;
+    margin: 10px 0;
+    border-radius: 50%; /* 圆形 */
+    box-sizing: border-box; /* 设置的边框和内边距的值是包含在width中 */
+    border: 3px solid white; /* 边框 */
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2); /* 阴影 */
+    cursor: pointer; /* 鼠标标志 */
+    transition: 0.3s; /* 更改CSS属性时控制动画速度 */
+}
+
+/* 颜色选择列表 激活元素的样式 */
+.color-group ul li.active {
+    box-shadow: 0 0 15px #00CCFF; /* 阴影 */
+}
+
+/* 设置滑动条位置 */
+#range-wrap {
+    position: fixed;
+    top: 50%;
+    right: 30px;
+    width: 30px;
+    height: 150px;
+    margin-top: -75px;
+}
+
+/* 设置滑动条样式 */
+#range-wrap input {
+    transform: rotate(-90deg); /* 旋转-90° */
+    width: 150px;
+    height: 20px;
+    margin: 0;
+    transform-origin: 75px 75px; /* 旋转的原点在元素的75px, 75px */
+    border-radius: 15px;
+    -webkit-appearance: none; /* 不使用默认样式， 其中webkit是浏览器的渲染引擎 */
+    outline: none; /* 没有轮廓 */
+    position: relative;
+}
+
+/* 在input后面添加一个元素：凹槽上的上款下窄的图案 */
+#range-wrap input::after {
+    display: block; /* 此元素将显示为块级元素，此元素前后会带有换行符。 */
+    content: "";
+    width: 0;
+    height: 0;
+    border: 5px solid transparent; /* 渐变  */
+    border-right: 150px solid #00CCFF;
+    border-left-width: 0;
+    position: absolute;
+    left: 0;
+    top: 5px;
+    border-radius: 15px;
+    z-index: 0; /* 放在底层 */
+}
+
+/* -webkit-slider-thumb 和 -moz-range-thumb 用于设置range的滑块的具体样式*/
+#range-wrap input[type=range]::-webkit-slider-thumb, #range-wrap input[type=range]::-moz-range-thumb {
+    -webkit-appearance: none; /* 不用默认样式 */
+}
+
+/* -webkit-slider-runnable-track 用于设置滑动凹槽样式 */
+#range-wrap input[type=range]::-webkit-slider-runnable-track, #range-wrap input[type=range]::-moz-range-track {
+    height: 10px;
+    border-radius: 10px;
+    box-shadow: none;
+}
+
+/* 设置滑动块样式 */
+#range-wrap input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 20px;
+    width: 20px;
+    margin-top: -1px;
+    background: #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #00CCFF;
+    position: relative;
+    z-index: 999;
+}
+
+
+/* 使用媒体查询: max-width<768px的屏幕 （一般是手机） */
+/* 下面是屏幕大小<768px时的样式  */
+@media screen and (max-width: 768px) {
+    .header {
+        bottom: auto;
+        top: 20px;
+    }
+
+    .tools {
+        bottom: auto;
+        top: 20px;
+    }
+
+    .tools button {
+        width: 35px;
+        height: 35px;
+        line-height: 35px;
+        margin-bottom: 15px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .tools button.active, .tools button:active {
+        box-shadow: 0 0 5px #00CCFF;
+    }
+
+    .tools button i {
+        font-size: 18px;
+    }
+
+    .tools #swatches {
+        display: none
+    }
+
+
+    .tools .recognition_result {
+        display: none;
+    }
+
+
+    .color-group {
+        left: 0;
+        top: auto;
+        bottom: 20px;
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+        transform: translate(0, 0)
+    }
+
+    .color-group ul li {
+        display: inline-block;
+        margin: 0 5px;
+    }
+
+    .color-group ul li.active {
+        box-shadow: 0 0 10px #00CCFF;
+    }
+
+    #range-wrap {
+        right: auto;
+        left: 20px;
+    }
+
+    
+}
