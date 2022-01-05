@@ -42,10 +42,11 @@ def transGreyImgToMNIST(img_grey, size=(28, 28)):
                                            extendPiexl + paddingNum,
                                            extendPiexl + paddingNum,
                                            cv2.BORDER_CONSTANT)
+        plt.imsave("imgs1/output{}0.png".format(i),borderImg)
         targetImg = cv2.resize(borderImg, size)  # img => (28, 28)
         targetImg = targetImg / 255  # 将灰度映射到(0~1)
         imgData[i] = targetImg
-        plt.imsave("imgs/output{}1.png".format(i), targetImg)
+        plt.imsave("imgs1/output{}1.png".format(i), targetImg)
 
     return imgData  # (n, 28, 28)
 

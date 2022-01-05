@@ -52,14 +52,14 @@ def predict():
     res = []
     for i, imgByte in enumerate(imgBytesArr):
         # 将图像写入
-        # with open("imgs/output{}0.png".format(i), "wb") as output:
-        #     output.write(base64.decodebytes(imgByte))
+        with open("imgs/output{}0.png".format(i), "wb") as output:
+            output.write(base64.decodebytes(imgByte))
 
         # 使用opencv来处理图像
         img_bytes = base64.b64decode(imgByte)  # bytes -> bytes
         img_array = np.frombuffer(img_bytes, np.uint8)  # bytes->nparray
         img_grey = cv2.imdecode(img_array, cv2.IMREAD_GRAYSCALE)  # 灰度图模式读取
-        # plt.imsave("imgs/output{}1.png".format(i), img_grey)
+        plt.imsave("imgs/output{}1.png".format(i), img_grey)
         imgTran = cv2.resize(img_grey, (28, 28)) / 255  # 转换大小, (因为训练集中的灰度是使用小数的，所以这里也要除以255转化转换成小数)
         # 处理图像，让黑色部分更黑，白色部分更白
         imgTran[imgTran == imgTran.max()] += 0.1
@@ -78,7 +78,7 @@ def predict():
     response = {'code': code}
     print(response, end=' ')
     end = time.time()
-    print("times:{}s".format(end-start))
+    print("predict times:{}s".format(end-start))
     return jsonify(response), 200, [("Access-Control-Allow-Origin", "*")]
 
 
@@ -88,12 +88,13 @@ def upload():
     start = time.time()
     data = request.get_data()
     imgBytes = re.search(b'base64,(.*)', data).group(1)
-    # with open("imgs/outputWhole.png", "wb") as output:
-    #     output.write(base64.decodebytes(imgBytes))
+    with open("imgs1/outputAllCanvas.png", "wb") as output:
+        output.write(base64.decodebytes(imgBytes))
 
     img_bytes = base64.b64decode(imgBytes)  # bytes -> bytes
     img_array = np.frombuffer(img_bytes, np.uint8)  # bytes->nparray
     img_grey = cv2.imdecode(img_array, cv2.IMREAD_GRAYSCALE)  # 灰度图模式读取
+    plt.imsave("imgs1/outputAllCanvasGray.png", img_grey)
     mnistImgs = transGreyImgToMNIST(img_grey) # mnistImgs ：(n, 28, 28) n是识别到图片的数量
     code = ''
     for mnistImg in mnistImgs:
@@ -104,7 +105,7 @@ def upload():
     response = {'code': code}
     print(response, end=' ')
     end = time.time()
-    print("time:{}s".format(end-start))
+    print("upload time:{}s".format(end-start))
     return jsonify(response), 200, [("Access-Control-Allow-Origin", "*")]
 
 

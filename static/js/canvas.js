@@ -199,7 +199,7 @@ upload.onclick = function () {
         imgData = mnistPad.makeImageDataBlackBackgroundWhiteDigit(imgData)
         tmpCanvas.getContext("2d").putImageData(imgData, 0, 0)
         let dataUrl = tmpCanvas.toDataURL()
-
+        console.log(dataUrl)
         const http = new XMLHttpRequest()
         const formData = new FormData();
         formData.append("data", dataUrl)
