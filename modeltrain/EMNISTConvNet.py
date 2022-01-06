@@ -82,6 +82,7 @@ class ConvNet(nn.Module):
             nn.ReLU(inplace=True),
             nn.Dropout(p=0.2),
             nn.Linear(128, 47),  # (1, 512) => (1, 47)
+            # nn.Linear(128, 27),  # 全字母的模型
         )
 
     # 前向传递函数

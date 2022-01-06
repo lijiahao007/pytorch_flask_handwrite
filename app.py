@@ -59,7 +59,7 @@ def predict():
     # 获取图像，使用模型预测， 返回预测结果
     start = time.time()
     datas = request.get_data()
-
+    
     # 将图片base64编码部分摘出来
     imgBytes = re.search(b'[[](.*?)[]]', datas).group(1)
     imgBytesArr = imgBytes.split(b',')

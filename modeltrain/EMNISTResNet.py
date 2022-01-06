@@ -88,6 +88,7 @@ class ResNet18(nn.Module):  # 构建resnet18层
         self.blk4 = ResBlk(256, 256, stride=1)
 
         self.linearLayer1 = nn.Linear(256, 47)  # 最后是全连接层
+        # self.linearLayer1 = nn.Linear(256, 27)  # 全字母的模型
 
     def forward(self, x):  # 定义整个向前传播
         """
