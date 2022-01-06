@@ -8,18 +8,27 @@ import numpy as np
 from imageToMnist import transGreyImgToMNIST
 import time
 
+
+# MNIST
 # 全连接网络
-# from model.NeuralNet import load_model, model_predict
-# model_file = "model/model_NeuralNet.ckpt"
+# from model.NeuralNet import load_model, model_predict, get_model_files
 
-# # 卷积网络
-# from model.ConvNet import load_model, model_predict
-# model_file = "model/model_ConvNet.ckpt"
+# 卷积网络
+# from model.ConvNet import load_model, model_predict, get_model_files
 
-# # 残差网络
-from model.ResNet import load_model, model_predict
-model_file = "model/model_resNet.ckpt"
+# 残差网络
+# from model.ResNet import load_model, model_predict, get_model_files
 
+# EMNIST手写英文、数字识别
+# 残差网络
+# from model.EMNIST_ConvNet import load_model, model_predict, get_model_files
+
+# 卷积网络
+from model.EMNIST_ResNet import load_model, model_predict, get_model_files
+
+
+model_file = get_model_files()[0]
+print("load_model from ", model_file)
 model = load_model(model_file)  # 加载模型
 
 app = Flask(__name__,
@@ -78,7 +87,7 @@ def predict():
     response = {'code': code}
     print(response, end=' ')
     end = time.time()
-    print("predict times:{}s".format(end-start))
+    print("predict times:{}s".format(end - start))
     return jsonify(response), 200, [("Access-Control-Allow-Origin", "*")]
 
 
@@ -95,7 +104,7 @@ def upload():
     img_array = np.frombuffer(img_bytes, np.uint8)  # bytes->nparray
     img_grey = cv2.imdecode(img_array, cv2.IMREAD_GRAYSCALE)  # 灰度图模式读取
     plt.imsave("imgs1/outputAllCanvasGray.png", img_grey)
-    mnistImgs = transGreyImgToMNIST(img_grey) # mnistImgs ：(n, 28, 28) n是识别到图片的数量
+    mnistImgs = transGreyImgToMNIST(img_grey)  # mnistImgs ：(n, 28, 28) n是识别到图片的数量
     code = ''
     for mnistImg in mnistImgs:
         # mnistImg: (28, 28)
@@ -105,9 +114,8 @@ def upload():
     response = {'code': code}
     print(response, end=' ')
     end = time.time()
-    print("upload time:{}s".format(end-start))
+    print("upload time:{}s".format(end - start))
     return jsonify(response), 200, [("Access-Control-Allow-Origin", "*")]
-
 
 
 if __name__ == '__main__':
