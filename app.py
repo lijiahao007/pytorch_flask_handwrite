@@ -9,7 +9,7 @@ from imageToMnist import transGreyImgToMNIST
 import time
 
 
-# MNIST
+# ==================== MNIST 手写数字识别 ==================
 # 全连接网络
 # from model.NeuralNet import load_model, model_predict, get_model_files
 
@@ -19,12 +19,21 @@ import time
 # 残差网络
 # from model.ResNet import load_model, model_predict, get_model_files
 
-# EMNIST手写英文、数字识别
+# ====================== EMNIST 手写英文识别 ==========================
+# 卷积网络
+from model.EMNIST_Letters_ConvNet import load_model, model_predict, get_model_files
+
 # 残差网络
-# from model.EMNIST_ConvNet import load_model, model_predict, get_model_files
+# from model.EMNIST_Letters_ResNet import load_model, model_predict, get_model_files
+
+
+# ======================== EMNIST手写英文、数字识别 =====================
+# (这个识别率有点低，因为数字和字母中某些字符是很容易混淆的)
+# 残差网络
+# from model.EMNIST_Balanced_ConvNet import load_model, model_predict, get_model_files
 
 # 卷积网络
-from model.EMNIST_ResNet import load_model, model_predict, get_model_files
+# from model.EMNIST_Balanced_ResNet import load_model, model_predict, get_model_files
 
 
 model_file = get_model_files()[0]
